@@ -78,13 +78,12 @@ const submitForm = async () => {
   isLoading.value = true;
   try {
     const { error } = await supabase.from("transactions").upsert({ ...state.value });
-    if (!error) {
-      toastSucess({ title: "添加收支数据成功！" });
-      dialog.value = false;
-      emit("saved");
-    }
+    if (error) throw error;
+    toastSucess({ title: "添加成功！" });
+    dialog.value = false;
+    emit("saved");
   } catch (error) {
-    toastError({ title: "添加收支数据失败！", description: error.message });
+    toastError({ title: "添加失败！", description: error.message });
   } finally {
     isLoading.value = false;
   }

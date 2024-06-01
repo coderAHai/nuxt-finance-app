@@ -1,7 +1,7 @@
 <template>
   <header class="flex justify-between items-center">
-    <NuxtLink to="/" class="text-3xl font-bold"> 财务管理 </NuxtLink>
-    <div>
+    <NuxtLink to="/" class="text-3xl font-bold"> Finance Tracker </NuxtLink>
+    <div v-if="user">
       <UDropdown
         :items="items"
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-const user = useSupabaseUser();
+const user = await useSupabaseUser();
 const supabase = useSupabaseClient();
 const logout = async () => {
   await supabase.auth.signOut();

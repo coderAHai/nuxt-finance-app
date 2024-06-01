@@ -57,8 +57,6 @@ const {
   pending,
   refresh,
   transactions: {
-    income,
-    expense,
     incomeTotal,
     expenseTotal,
     incomeCount,

@@ -49,11 +49,12 @@ const { currency } = useCurrency(props.transaction.amount);
 const deleteTransaction = async () => {
   isLoading.value = true;
   try {
-    await supabase.from("transactions").delete().eq("id", props.transaction.id);
-    toastSucess({ title: "删除收支数据成功！" });
+    const { error } = await supabase.from("transactions").delete().eq("id", props.transaction.id);
+    if (error) throw error;
+    toastSucess({ title: "删除成功！" });
     emit("deleted");
   } catch (error) {
-    toastError({ title: "删除收支数据失败！", description: error.message });
+    toastError({ title: "删除失败！", description: error.message });
   } finally {
     isLoading.value = false;
   }

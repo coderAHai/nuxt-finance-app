@@ -41,14 +41,13 @@ const handleLogin = async () => {
         emailRedirectTo: "http://localhost:3000",
       },
     });
-    if (error) {
-      toastError({
-        title: "用户验证错误",
-        icon: "i-heroicons-exlamation-circle",
-      });
-    } else {
-      sucess.value = true;
-    }
+    if (error) throw error;
+    sucess.value = true;
+  } catch (error) {
+    toastError({
+      title: error.message,
+      icon: "i-heroicons-exlamation-circle",
+    });
   } finally {
     pending.value = false;
   }
