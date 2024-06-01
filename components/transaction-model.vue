@@ -49,7 +49,7 @@ const emit = defineEmits(["update:modelValue", "saved"]);
 const form = ref();
 const isLoading = ref(false);
 const supabase = useSupabaseClient();
-const toast = useToast();
+const { toastSucess, toastError } = useAppToast();
 const schema = z.object({
   type: z.enum(["收入", "支出", "投资", "储蓄"], { message: "请选择收支类型" }),
   amount: z
@@ -79,21 +79,12 @@ const submitForm = async () => {
   try {
     const { error } = await supabase.from("transactions").upsert({ ...state.value });
     if (!error) {
-      toast.add({
-        title: "添加收支数据成功！",
-        icon: "i-heroicons-check-circle",
-        color: "green",
-      });
+      toastSucess({ title: "添加收支数据成功！" });
       dialog.value = false;
       emit("saved");
     }
   } catch (error) {
-    toast.add({
-      title: "添加收支数据失败！",
-      description: error.message,
-      icon: "i-heroicons-exclamation-circle",
-      color: "red",
-    });
+    toastError({ title: "添加收支数据失败！", description: error.message });
   } finally {
     isLoading.value = false;
   }

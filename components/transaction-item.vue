@@ -35,7 +35,7 @@ const emit = defineEmits(["deleted"]);
 // supabase实例
 const supabase = useSupabaseClient();
 // 提示
-const toast = useToast();
+const { toastSucess, toastError } = useAppToast();
 // 加载状态
 const isLoading = ref(false);
 // 收入 | 支出状态
@@ -50,19 +50,10 @@ const deleteTransaction = async () => {
   isLoading.value = true;
   try {
     await supabase.from("transactions").delete().eq("id", props.transaction.id);
-    toast.add({
-      title: "删除收支数据成功！",
-      icon: "i-heroicons-check-circle",
-      color: "green",
-    });
+    toastSucess({ title: "删除收支数据成功！" });
     emit("deleted");
   } catch (error) {
-    toast.add({
-      title: "删除收支数据失败！",
-      description: error.message,
-      icon: "i-heroicons-exclamation-circle",
-      color: "red",
-    });
+    toastError({ title: "删除收支数据失败！", description: error.message });
   } finally {
     isLoading.value = false;
   }

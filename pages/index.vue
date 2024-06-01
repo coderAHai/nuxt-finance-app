@@ -6,8 +6,8 @@
     </div>
   </section>
   <section class="grid grid-cols-2 mb-10 lg:grid-cols-4 gap-8 lg:gap-16">
-    <Trand title="收入" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
-    <Trand title="支出" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
+    <Trand title="收入" color="green" :amount="incomeTotal" :lastAmount="previousIncomeTotal" :loading="pending" />
+    <Trand title="支出" color="green" :amount="expenseTotal" :lastAmount="previousExpenseTotal" :loading="pending" />
     <Trand title="投资" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
     <Trand title="储蓄" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
   </section>
@@ -52,6 +52,7 @@ import { transactionViewOptions } from "../constants";
 
 const selectedView = ref(transactionViewOptions[2]);
 const dialog = ref(false);
+const { current, previous } = useSelectedTimePeriod(selectedView);
 const {
   pending,
   refresh,
@@ -64,8 +65,13 @@ const {
     expenseCount,
     grouped: { byDate },
   },
-} = useFetchTransactions();
+} = useFetchTransactions(current);
+const {
+  refresh: previousRefresh,
+  transactions: { incomeTotal: previousIncomeTotal, expenseTotal: previousExpenseTotal },
+} = useFetchTransactions(previous);
 await refresh();
+await previousRefresh();
 </script>
 
 <style lang="scss" scoped></style>

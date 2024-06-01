@@ -13,14 +13,8 @@
     <div>
       <USkeleton class="w-full h-6" v-if="loading"></USkeleton>
       <div v-else class="flex items-center text-sm space-x-1">
-        <UIcon
-          :name="icon"
-          class="w-6 h-6"
-          :class="{ green: trendingUp, red: !trendingUp }"
-        ></UIcon>
-        <div class="text-gray-500 dark:text-gray-400">
-          {{ percentageTrend }} vs last period
-        </div>
+        <UIcon :name="icon" class="w-6 h-6" :class="{ green: trendingUp, red: !trendingUp }"></UIcon>
+        <div class="text-gray-500 dark:text-gray-400">{{ percentageTrend }} vs last period</div>
       </div>
     </div>
   </div>
@@ -34,20 +28,18 @@ const props = defineProps({
   color: String,
   loading: Boolean,
 });
-const { currency } = useCurrency(props.amount);
+const { amount, lastAmount } = toRefs(props);
+const { currency } = useCurrency(amount);
+
 // 趋势
-const trendingUp = computed(() => props.amount >= props.lastAmount);
+const trendingUp = computed(() => amount.value >= lastAmount.value);
 // 图标
-const icon = computed(() =>
-  trendingUp.value
-    ? "i-heroicons-arrow-trending-up"
-    : "i-heroicons-arrow-trending-down"
-);
+const icon = computed(() => (trendingUp.value ? "i-heroicons-arrow-trending-up" : "i-heroicons-arrow-trending-down"));
 // 比例
 const percentageTrend = computed(() => {
-  if (props.amount === 0 || props.lastAmount === 0) return `∞%`;
-  const bigger = Math.max(props.amount, props.lastAmount);
-  const lower = Math.min(props.amount, props.lastAmount);
+  if (amount.value === 0 || lastAmount.value === 0) return `∞%`;
+  const bigger = Math.max(amount.value, lastAmount.value);
+  const lower = Math.min(amount.value, lastAmount.value);
   const ratio = ((bigger - lower) / lower) * 100;
   return `${Math.ceil(ratio)}%`;
 });
