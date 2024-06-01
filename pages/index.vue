@@ -5,7 +5,7 @@
       <USelectMenu v-model="selectedView" :options="transactionViewOptions" />
     </div>
   </section>
-  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-16 mb-10">
+  <section class="grid grid-cols-2 mb-10 lg:grid-cols-4 gap-8 lg:gap-16">
     <Trand title="收入" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
     <Trand title="支出" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
     <Trand title="投资" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
