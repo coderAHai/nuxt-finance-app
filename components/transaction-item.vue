@@ -21,6 +21,7 @@
             trailing-icon="i-heroicons-ellipsis-horizontal"
             :loading="isLoading"
           ></UButton>
+          <TransactionModel v-model="dialog" :transaction="transaction" @saved="emit('edited')" />
         </UDropdown>
       </div>
     </div>
@@ -31,7 +32,8 @@
 const props = defineProps({
   transaction: Object,
 });
-const emit = defineEmits(["deleted"]);
+const emit = defineEmits(["deleted", "edited"]);
+const dialog = ref(false);
 // supabase实例
 const supabase = useSupabaseClient();
 // 提示
@@ -43,8 +45,8 @@ const isIncome = computed(() => props.transaction.type === "收入");
 const icon = computed(() => (isIncome.value ? "i-heroicons-arrow-up-right" : "i-heroicons-arrow-down-left"));
 const iconColor = computed(() => (isIncome.value ? "text-green-600" : "text-red-600"));
 // 收入 | 支出金额
-const { currency } = useCurrency(props.transaction.amount);
-// 收支数据操作
+const amountData = computed(() => props.transaction.amount);
+const { currency } = useCurrency(amountData);
 // 删除收支数据
 const deleteTransaction = async () => {
   isLoading.value = true;
@@ -62,12 +64,14 @@ const deleteTransaction = async () => {
 const items = [
   [
     {
-      label: "Edit",
+      label: "编辑",
       icon: "i-heroicons-pencil-square-20-solid",
-      click: () => console.log("Edit"),
+      click: () => {
+        dialog.value = true;
+      },
     },
     {
-      label: "Delete",
+      label: "删除",
       icon: "i-heroicons-trash-20-solid",
       click: deleteTransaction,
     },

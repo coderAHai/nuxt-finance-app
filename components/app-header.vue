@@ -7,7 +7,7 @@
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
         :popper="{ placement: 'bottom-start' }"
       >
-        <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+        <UAvatar :src="url" />
 
         <template #account="{ item }">
           <div class="text-left">
@@ -31,9 +31,13 @@
 <script setup>
 const user = await useSupabaseUser();
 const supabase = useSupabaseClient();
+const { url } = useAvatarUrl();
 const logout = async () => {
   await supabase.auth.signOut();
   return navigateTo("/login");
+};
+const navigateSettings = async () => {
+  navigateTo("/settings/profile");
 };
 const items = [
   [
@@ -46,7 +50,7 @@ const items = [
     {
       label: "用户设置",
       icon: "i-heroicons-cog-8-tooth",
-      click: () => console.log("用户设置"),
+      click: navigateSettings,
     },
     {
       label: "退出登录",

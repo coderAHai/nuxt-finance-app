@@ -8,8 +8,8 @@
   <section class="grid grid-cols-2 mb-10 lg:grid-cols-4 gap-8 lg:gap-16">
     <Trand title="收入" color="green" :amount="incomeTotal" :lastAmount="previousIncomeTotal" :loading="pending" />
     <Trand title="支出" color="green" :amount="expenseTotal" :lastAmount="previousExpenseTotal" :loading="pending" />
-    <Trand title="投资" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
-    <Trand title="储蓄" color="green" :amount="4000" :lastAmount="3000" :loading="pending" />
+    <Trand title="投资" color="green" :amount="investTotal" :lastAmount="previousInvestTotal" :loading="pending" />
+    <Trand title="储蓄" color="green" :amount="savingsTotal" :lastAmount="previousSavingsTotal" :loading="pending" />
   </section>
 
   <section class="flex justify-between items-center mb-10">
@@ -39,6 +39,7 @@
         :key="transaction.id"
         :transaction="transaction"
         @deleted="refresh()"
+        @edited="refresh()"
       />
     </div>
   </section>
@@ -50,7 +51,8 @@
 <script setup>
 import { transactionViewOptions } from "../constants";
 
-const selectedView = ref(transactionViewOptions[2]);
+const user = useSupabaseUser();
+const selectedView = ref(user.value.user_metadata?.transaction_view ?? transactionViewOptions[2]);
 const dialog = ref(false);
 const { current, previous } = useSelectedTimePeriod(selectedView);
 const {
@@ -61,12 +63,19 @@ const {
     expenseTotal,
     incomeCount,
     expenseCount,
+    investTotal,
+    savingsTotal,
     grouped: { byDate },
   },
 } = useFetchTransactions(current);
 const {
   refresh: previousRefresh,
-  transactions: { incomeTotal: previousIncomeTotal, expenseTotal: previousExpenseTotal },
+  transactions: {
+    incomeTotal: previousIncomeTotal,
+    expenseTotal: previousExpenseTotal,
+    investTotal: previousInvestTotal,
+    savingsTotal: previousSavingsTotal,
+  },
 } = useFetchTransactions(previous);
 await refresh();
 await previousRefresh();

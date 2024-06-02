@@ -57,11 +57,34 @@ export const useFetchTransactions = (period) => {
     }
   });
 
+  // 投资
+  const invest = computed(() => data.value.filter((item) => item.type === "投资"));
+  const investCount = computed(() => invest.value.length);
+  const investTotal = computed(() => {
+    if (investCount) {
+      return invest.value.reduce((sum, item) => sum + item.amount, 0);
+    } else {
+      return 0;
+    }
+  });
+
+  // 储蓄
+  const savings = computed(() => data.value.filter((item) => item.type === "储蓄"));
+  const savingsCount = computed(() => savings.value.length);
+  const savingsTotal = computed(() => {
+    if (savingsCount) {
+      return savings.value.reduce((sum, item) => sum + item.amount, 0);
+    } else {
+      return 0;
+    }
+  });
+
   // 获取收支日期
   const transactionGroupedByDate = computed(() => {
     let grouped = {};
     for (const item of data.value) {
       const date = formatInTimeZone(item.created_at, "Asia/Shanghai", "yyyy-MM-dd");
+      item.created_at = formatInTimeZone(item.created_at, "Asia/Shanghai", "yyyy-MM-dd");
       if (!grouped[date]) {
         grouped[date] = [];
       }
@@ -77,10 +100,16 @@ export const useFetchTransactions = (period) => {
       },
       income,
       expense,
+      invest,
+      savings,
       incomeTotal,
       expenseTotal,
+      investTotal,
+      savingsTotal,
       incomeCount,
       expenseCount,
+      investCount,
+      savingsCount,
     },
     refresh,
     pending,

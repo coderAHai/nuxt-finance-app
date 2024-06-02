@@ -1,7 +1,7 @@
 <template>
   <UCard v-if="!sucess">
     <template #header> 邮箱登录 </template>
-    <UForm :state="state" :schema="schema" @submit="handleLogin" ref="form">
+    <UForm :state="state" :schema="schema" @submit="handleLogin">
       <UFormGroup label="邮箱" name="email" class="mb-4" :required="true" help="你将收到一封邮件用于验证账号注册">
         <UInput type="email" placeholder="请输入邮箱" required v-model="state.email"></UInput>
       </UFormGroup>
@@ -26,14 +26,11 @@ const state = ref({ email: undefined });
 const pending = ref(false);
 const { toastSucess, toastError } = useAppToast();
 const supabase = useSupabaseClient();
-const form = ref();
 const schema = z.object({
   email: z.string({ required_error: "请输入邮箱" }).email({ message: "邮箱格式错误" }),
 });
 const handleLogin = async () => {
-  if (form.value.error) return;
   pending.value = true;
-  console.log(state.email);
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: state.value.email,
