@@ -88,7 +88,6 @@ const resetForm = () => {
 const submitForm = async () => {
   isLoading.value = true;
   try {
-    console.log(state.value);
     const { error } = await supabase.from("transactions").upsert({ ...state.value, id: props.transaction?.id });
     if (error) throw error;
     toastSucess({ title: isEditing.value ? "编辑成功" : "添加成功" });
