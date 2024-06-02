@@ -29,13 +29,14 @@ const supabase = useSupabaseClient();
 const schema = z.object({
   email: z.string({ required_error: "请输入邮箱" }).email({ message: "邮箱格式错误" }),
 });
+const redirectUrl = useRuntimeConfig().public.baseUrl;
 const handleLogin = async () => {
   pending.value = true;
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: state.value.email,
       options: {
-        emailRedirectTo: "http://localhost:3000",
+        emailRedirectTo: redirectUrl,
       },
     });
     if (error) throw error;
