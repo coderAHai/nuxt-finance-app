@@ -1,75 +1,18 @@
-# Nuxt 3 Minimal Starter
+# Finance Tracker
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Finance Tracker一款个人财务追踪的简易App，能够帮你记录和管理你的财务状况。
 
-## Setup
+## 技术栈
 
-Make sure to install the dependencies:
+Finance Tracker通过Nuxt3 & 在线实时数据库Supabase实现。
 
-```bash
-# npm
-npm install
+## 项目预览
 
-# pnpm
-pnpm install
+### 首页
+![image](https://github.com/coderAHai/nuxt-finance-app/assets/153601898/8bcedc4f-0ce4-49f0-afab-947b89322fe6)
 
-# yarn
-yarn install
+### 账号设置
+![image](https://github.com/coderAHai/nuxt-finance-app/assets/153601898/02df91d3-3482-4575-90ae-00f08885ca36)
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### 账号登录
+![image](https://github.com/coderAHai/nuxt-finance-app/assets/153601898/7c71d340-2688-4410-b016-b21eebc747ef)
